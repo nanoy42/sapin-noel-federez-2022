@@ -38,7 +38,7 @@ import matplotlib.pyplot as plt
 M = 25  # Number of modes : 2*m+1
 N = 10000  # Number of samples
 
-# Tree esthetics
+# Tree aesthetics
 
 HEIGHT_FIRST_CONE = 15
 WIDTH_FIRST_CONE = 5
@@ -100,16 +100,9 @@ def sampling_level_line(l: int, excl: int):
     L = 2 * l + (2 * excl - 1)
     offset = (2 * M + 1 - L) // 2
 
-    prob = 1 / (2 * l)
     circuit = pcvl.Circuit(2 * M + 1)
     for i in range(2 * l):
-        circuit.add(i, BS(BS.r_to_theta(prob)))
-        if prob == 1:
-            prob = 1
-        else:
-            prob = prob / (1 - prob)
-        if prob > 1:
-            prob = 1
+        circuit.add(i, BS(BS.r_to_theta(1 / (2 * l - i))))
 
     # Use a nice permutation to get the good result
     perm = (
@@ -180,7 +173,7 @@ plt.figure()
 plt.imshow(
     10 * np.log10(1 + np.log10(1 + matrix)), cmap="Greens", interpolation="nearest"
 )
-plt.xlabel("Probabilty of each spatial mode")
+plt.xlabel("Probability of each spatial mode")
 plt.ylabel("Circuit")
 plt.title("Joyeux Noël FedeRez !")
 plt.colorbar()
